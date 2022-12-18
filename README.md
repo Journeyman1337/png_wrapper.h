@@ -33,5 +33,5 @@ Want to try the example project? You can set it up easily using bash console.
 
     git clone https://github.com/Journeyman-dev/png_wrapper.h
     cd png_wrapper.h
-    cmake -S . -B ./build/ -D PNGW_BUILD_EXAMPLE=ON -D PNGW_EXAMPLE_AUTO_FETCH=ON
+    cmake -S . -B ./build/ -D PNGW_BUILD_EXAMPLE=ON -D PNGW_AUTO_FETCH=ON
     cmake --build ./build/
