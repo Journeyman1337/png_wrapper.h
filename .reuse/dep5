@@ -1,0 +1,10 @@
+Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
+Upstream-Name: png_wrapper.h
+Upstream-Contact: Daniel Aimé Valcour <fosssweeper@gmail.com>
+Source: https://github.com/Journeyman-dev/png_wrapper.h
+
+# Sample paragraph, commented out:
+#
+# Files: src/*
+# Copyright: $YEAR $NAME <$CONTACT>
+# License: ...
