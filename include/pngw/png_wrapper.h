@@ -35,7 +35,7 @@
                 git submodule update --init
           2. In your project's top level CMakeLists.txt:
                 set(PNGW_BUILD_EXAMPLE OFF) # Set to ON to build the example target.
-                set(PNGW_AUTO_FETCH OFF) # Set to ON to automatically fetch libpng.
+                set(PNGW_AUTO_FETCH OFF) # Set to ON to automatically fetch libpng (see bellow).
                 add_subdirectory(png_wrapper.h)
           3. Link it with the CMake target of your project:
                target_link_libraries(YOUR_TARGET_NAME PRIVATE pngw::pngw)
@@ -49,10 +49,16 @@
                         FIND_PACKAGE_ARGS
                 )
                 set(PNGW_BUILD_EXAMPLE OFF) # Set to ON to build the example target.
-                set(PNGW_AUTO_FETCH OFF) # Set to ON to automatically fetch libpng.
+                set(PNGW_AUTO_FETCH OFF) # Set to ON to automatically fetch libpng (see bellow).
                 FetchContent_MakeAvailable(pngw)
           2. Link it with the CMake target of your project:
                 target_link_libraries(YOUR_TARGET_NAME PRIVATE pngw::pngw)
+                
+   If you choose to link with png_wrapper.h using its CMake generation scripts, note that png_wrapper.h
+   requires to be linked with libpng. By default, png_wrapper.h will try to find libpng using the CMake
+   function call find_package(PNG). A good option for making a libpng package avaliable is to add it using
+   vcpkg. If you want to get png_wrapper.h up and running quickly, you can turn the CMake option
+   PNGW_AUTO_FETCH to ON, and CMake will download libpng from github using FetchContent.
 
    After png_wrapper.h is included in your project, you must implement the library before you can
    actually use it. To implement png_wrapper.h, create a new .c or .cpp file and write in it the
