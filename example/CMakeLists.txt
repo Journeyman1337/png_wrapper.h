@@ -23,9 +23,8 @@ add_executable(pngw_example "")
 add_executable(pngw::example ALIAS pngw_example)
 add_subdirectory(src)
 target_link_libraries(pngw_example
-    PUBLIC
-        pngw::pngw
-        png
+  PUBLIC
+      pngw::pngw
 )
 set(PNGW_ASSET_FILES
     "dude.png"

@@ -25,7 +25,7 @@ PROJECT(pngw
     DESCRIPTION "A header only wrapper around libpng"
     LANGUAGES C
 )
-option(PNGW_BUILD_EXAMPLE "Build the png_wrapper.h example project" OFF)'libpng
+option(PNGW_BUILD_EXAMPLE "Build the png_wrapper.h example project" OFF)
 option(PNGW_AUTO_FETCH "Automatically fetch the dependencies of png_wrapper.h" OFF)
 if(PNGW_AUTO_FETCH)
     Include(FetchContent)
@@ -35,12 +35,18 @@ if(PNGW_AUTO_FETCH)
         GIT_TAG        v1.6.38
     )
     FetchContent_MakeAvailable(png)
+else()
+    find_package(PNG)
 endif()
 add_library(${PROJECT_NAME} INTERFACE "")
 add_library(pngw::pngw ALIAS ${PROJECT_NAME})
 target_include_directories(${PROJECT_NAME}
     INTERFACE
         "${CMAKE_CURRENT_SOURCE_DIR}/include/"
+)
+target_link_libraries(${PROJECT_NAME}
+    INTERFACE
+        png
 )
 if (PNGW_BUILD_EXAMPLE)
     add_subdirectory(example)
