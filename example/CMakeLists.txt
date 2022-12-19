@@ -27,3 +27,15 @@ target_link_libraries(pngw_example
         pngw::pngw
         png
 )
+set(PNGW_ASSET_FILES
+    "dude.png"
+)
+list(
+    TRANSFORM PNGW_ASSET_FILES
+    PREPEND "${CMAKE_CURRENT_SOURCE_DIR}/assets/"
+)
+add_custom_command(TARGET pngw_example POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different
+        ${PNGW_ASSET_FILES}
+        $<TARGET_FILE_DIR:pngw_example>
+)
