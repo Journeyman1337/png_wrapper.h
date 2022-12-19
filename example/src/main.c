@@ -37,17 +37,9 @@ int main()
     printf("an error has occured: %s\n", PNGW_RESULT_DESCRIPTIONS[result]);
     return 1;
   }
+  printf("got dude.png info: width=%zu height=%zu depth=%zu color=%s\n", width, height, file_depth, PNGW_COLOR_NAMES[file_color]);
 
-  size_t width, height, file_depth;
-  pngwcolor_t file_color;
-  result = pngwFileInfo("dude.png", &width, &height, &file_depth, &file_color);
-  if (result != PNGW_RESULT_OK)
-  {
-    printf("an error has occured: %s\n", PNGW_RESULT_DESCRIPTIONS[result]);
-    return 2;
-  }
-  printf("dude.png info: width=%zu height=%zu depth=%zu color=%s\n", width, height, file_depth,
-
+  size_t size;
   const size_t load_depth = 16;
   const pngwcolor_t load_color = PNGW_COLOR_RGB;
   result = pngwDataSize(width, height, load_depth, load_color, &size);
@@ -56,7 +48,7 @@ int main()
     printf("an error has occured: %s\n", PNGW_RESULT_DESCRIPTIONS[result]);
     return 3;
   }
-  printf("dude.png pixel data size: %zu bytes\n", size);
+  printf("determined dude.png pixel data size: %zu bytes\n", size);
 
   pngwb_t* data = malloc(size);
   if (!data)
@@ -64,9 +56,9 @@ int main()
     printf("an error has occured: out of memory\n");
     return 4;
   }
-  printf("dude.png load configuration: width=%zu, height=%zu depth=%zu color=%s\n", width, height,
-         load_depth, PNGW_COLOR_NAMES[load_color]);
 
+  printf("loading dude.png with convert on load: width=%zu, height=%zu depth=%zu color=%s\n", width, height,
+         load_depth, PNGW_COLOR_NAMES[load_color]);
   result = pngwReadFile("dude.png", data, PNGW_DEFAULT_ROW_OFFSET, width, height, load_depth,
                      load_color);
   if (result != PNGW_RESULT_OK)
@@ -75,6 +67,7 @@ int main()
     return 5;
   }
 
+  printf("saving new_dude.png to a file\n");
   result = pngwWriteFile("new_dude.png", data, PNGW_DEFAULT_ROW_OFFSET, width, height, load_depth,
                       load_color);
   if (result != PNGW_RESULT_OK)
