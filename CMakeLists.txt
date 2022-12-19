@@ -29,13 +29,12 @@ option(PNGW_BUILD_EXAMPLE "Build the png_wrapper.h example project" OFF)'libpng
 option(PNGW_AUTO_FETCH "Automatically fetch the dependencies of png_wrapper.h" OFF)
 if(PNGW_AUTO_FETCH)
     Include(FetchContent)
-                    FetchContent_Declare(
-                            png
-                            GIT_REPOSITORY https://github.com/glennrp/libpng
-                            GIT_TAG        v1.6.38
-                    )
-                    FetchContent_MakeAvailable(png)
-    endif()
+    FetchContent_Declare(
+        png
+        GIT_REPOSITORY https://github.com/glennrp/libpng
+        GIT_TAG        v1.6.38
+    )
+    FetchContent_MakeAvailable(png)
 endif()
 add_library(${PROJECT_NAME} INTERFACE "")
 add_library(pngw::pngw ALIAS ${PROJECT_NAME})
