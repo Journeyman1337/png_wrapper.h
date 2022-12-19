@@ -22,9 +22,21 @@
 add_executable(pngw_example "")
 add_executable(pngw::example ALIAS pngw_example)
 add_subdirectory(src)
+if(PNGW_EXAMPLE_AUTO_FETCH)
+    Include(FetchContent)
+    FetchContent_Declare(
+        png
+        GIT_REPOSITORY https://github.com/glennrp/libpng
+        GIT_TAG        v1.6.38
+    )
+    FetchContent_MakeAvailable(png)
+else()
+    find_package(PNG)
+endif()
 target_link_libraries(pngw_example
   PUBLIC
       pngw::pngw
+      png
 )
 set(PNGW_ASSET_FILES
     "dude.png"
