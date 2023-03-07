@@ -21,7 +21,7 @@
 */
 
 /*
-   png_wrapper.h v1.0.0
+   png_wrapper.h v1.0.1
    Easy to use wrapper arround libpng
    The source for this library can be found on GitHub:
    https://github.com/Journeyman-dev/png_wrapper.h
