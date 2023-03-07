@@ -44,7 +44,7 @@ if(PNGW_INSTALL)
     )
     write_basic_package_version_file(
         "${PROJECT_BINARY_DIR}/pngwConfigVersion.cmake"
-        VERSION 1.0.0
+        VERSION 1.0.1
         COMPATIBILITY SameMajorVersion
     )
     include(GNUInstallDirs)
