@@ -594,6 +594,7 @@ extern "C"
       png_write_row(png_ptr, row_start);
     }
     png_write_end(png_ptr, NULL);
+    png_destroy_write_struct(&png_ptr, &info_ptr, NULL);
     fclose(f);
     png_destroy_write_struct(&png_ptr, &info_ptr);
     return PNGW_RESULT_OK;
