@@ -593,7 +593,7 @@ extern "C"
       png_const_bytep row_start = data + (y * actual_row_offset);
       png_write_row(png_ptr, row_start);
     }
-    png_write_end(png_ptr, NULL);
+    png_write_end(png_ptr, info_ptr);
     png_destroy_write_struct(&png_ptr, &info_ptr, NULL);
     fclose(f);
     png_destroy_write_struct(&png_ptr, &info_ptr);
