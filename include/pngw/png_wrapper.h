@@ -561,14 +561,14 @@ extern "C"
     if (!info_ptr)
     {
       fclose(f);
-      png_destroy_read_struct(&png_ptr, NULL, NULL);
+      png_destroy_write_struct(&png_ptr, NULL, NULL);
       return PNGW_RESULT_ERROR_OUT_OF_MEMORY;
     }
     /* Create jump buffer to handle errors */
     if (setjmp(png_jmpbuf(png_ptr)))
     {
       fclose(f);
-      png_destroy_read_struct(&png_ptr, &info_ptr, NULL);
+      png_destroy_write_struct(&png_ptr, &info_ptr, NULL);
       return PNGW_RESULT_ERROR_JUMP_BUFFER_CALLED;
     }
     const int png_color_type = pngwColorToPngColor(color);
@@ -593,7 +593,8 @@ extern "C"
       png_const_bytep row_start = data + (y * actual_row_offset);
       png_write_row(png_ptr, row_start);
     }
-    png_write_end(png_ptr, NULL);
+    png_write_end(png_ptr, info_ptr);
+    png_destroy_write_struct(&png_ptr, &info_ptr, NULL);
     fclose(f);
     png_destroy_write_struct(&png_ptr, &info_ptr);
     return PNGW_RESULT_OK;
