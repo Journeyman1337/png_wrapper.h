@@ -21,7 +21,7 @@
 
 cmake_minimum_required(VERSION 3.19)
 PROJECT(pngw
-    VERSION 1.0.0
+    VERSION 1.0.2
     DESCRIPTION "A header only wrapper around libpng"
     LANGUAGES C
 )

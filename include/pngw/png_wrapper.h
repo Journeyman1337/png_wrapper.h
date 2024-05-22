@@ -21,7 +21,7 @@
 */
 
 /*
-   png_wrapper.h v1.0.1
+   png_wrapper.h v1.0.2
    Easy to use wrapper arround libpng
    The source for this library can be found on GitHub:
    https://github.com/Journeyman-dev/png_wrapper.h
@@ -188,6 +188,9 @@
    CHANGELOG
    - Version 1.0
        Initial Release
+   - Version 1.0.1
+       Fixed handling of endianess with 16 bit images.
+       Removed invalid arguments to png function call.
  */
 
 #ifndef PNGW_H
