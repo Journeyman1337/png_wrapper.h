@@ -592,6 +592,16 @@ extern "C"
     png_set_IHDR(png_ptr, info_ptr, (uint32_t)width, (uint32_t)height, (int)depth, png_color_type,
                  PNG_INTERLACE_NONE, PNG_COMPRESSION_TYPE_BASE, PNG_FILTER_TYPE_BASE);
     png_write_info(png_ptr, info_ptr);
+    // swap if writing 16 bit image on little endian machine
+    if (png_bit_depth == 16)
+    {
+      uint16_t integer = 32769; 
+      char *c = (char*)&integer;
+      if (c[0] == 1 && c[1] == 127) // memory is little endian
+      {
+        png_set_swap(png_ptr);
+      }
+    }
     int actual_row_offset;
     if (row_offset == PNGW_DEFAULT_ROW_OFFSET)
     {
