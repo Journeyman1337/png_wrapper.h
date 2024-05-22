@@ -278,6 +278,9 @@ extern "C"
   // Get the pngw_color enum of a libpng color macro.
   pngwcolor_t pngwPngColorToColor(const int png_color);
 
+  // Determine if the architecture uses little endian byte order.
+  int pngwIsLittleEndianMachine();
+
 #ifdef PNGW_IMPLEMENTATION
 #  ifndef PNGW_IMPLEMENTED
 #    define PNGW_IMPLEMENTED
@@ -479,14 +482,9 @@ extern "C"
 #    endif
     }
     // swap bytes
-    if (png_bit_depth == 16)
+    if (png_bit_depth == 16 && pngwIsLittleEndianMachine())
     {
-      uint16_t integer = 32769; 
-      char *c = (char*)&integer;
-      if (c[0] == 1 && c[1] == 127) // memory is little endian
-      {
-        png_set_swap(png_ptr);
-      }
+      png_set_swap(png_ptr);
     }
     // if image has less than 16 bit depth and 16 is wanted, upscale it to 16
     if (png_bit_depth < 16 && load_png_bit_depth == 16)
@@ -593,14 +591,9 @@ extern "C"
                  PNG_INTERLACE_NONE, PNG_COMPRESSION_TYPE_BASE, PNG_FILTER_TYPE_BASE);
     png_write_info(png_ptr, info_ptr);
     // swap if writing 16 bit image on little endian machine
-    if (png_bit_depth == 16)
+    if (png_bit_depth == 16 && pngwIsLittleEndianMachine())
     {
-      uint16_t integer = 32769; 
-      char *c = (char*)&integer;
-      if (c[0] == 1 && c[1] == 127) // memory is little endian
-      {
-        png_set_swap(png_ptr);
-      }
+      png_set_swap(png_ptr);
     }
     int actual_row_offset;
     if (row_offset == PNGW_DEFAULT_ROW_OFFSET)
@@ -668,6 +661,13 @@ extern "C"
     default:
       return PNGW_COLOR_G;
     }
+  }
+
+  int pngwIsLittleEndianMachine()
+  {
+    uint16_t integer = 32769; 
+    char *c = (char*)&integer;
+    return c[0] == 1 && c[1] == 127;
   }
 
 #  endif
