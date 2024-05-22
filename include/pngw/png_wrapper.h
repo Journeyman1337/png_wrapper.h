@@ -475,6 +475,16 @@ extern "C"
       png_set_strip_16(png_ptr);  // if scaling not supported, strip off the excess byte instead
 #    endif
     }
+    // swap bytes
+    if (png_bit_depth == 16)
+    {
+      uint16_t integer = 32769; 
+      char *c = (char*)&integer;
+      if (c[0] == 1 && c[1] == 127) // memory is little endian
+      {
+        png_set_swap(png_ptr);
+      }
+    }
     // if image has less than 16 bit depth and 16 is wanted, upscale it to 16
     if (png_bit_depth < 16 && load_png_bit_depth == 16)
     {
