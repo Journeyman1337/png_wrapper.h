@@ -1,9 +1,9 @@
-// SPDX-FileCopyrightText: 2022-2023 Daniel Aimé Valcour <fosssweeper@gmail.com>
+// SPDX-FileCopyrightText: 2022-2024 Daniel Aimé Valcour <fosssweeper@gmail.com>
 //
 // SPDX-License-Identifier: MIT
 
 /*
-    Copyright (c) 2022-2023 Daniel Aimé Valcour
+    Copyright (c) 2022-2024 Daniel Aimé Valcour
     Permission is hereby granted, free of charge, to any person obtaining a copy of
     this software and associated documentation files (the "Software"), to deal in
     the Software without restriction, including without limitation the rights to
@@ -21,7 +21,7 @@
 */
 
 /*
-   png_wrapper.h v1.0.1
+   png_wrapper.h v1.0.2
    Easy to use wrapper arround libpng
    The source for this library can be found on GitHub:
    https://github.com/Journeyman-dev/png_wrapper.h
@@ -188,6 +188,9 @@
    CHANGELOG
    - Version 1.0
        Initial Release
+   - Version 1.0.1
+       Fixed handling of endianess with 16 bit images.
+       Removed invalid arguments to png function call.
  */
 
 #ifndef PNGW_H
@@ -274,6 +277,9 @@ extern "C"
 
   // Get the pngw_color enum of a libpng color macro.
   pngwcolor_t pngwPngColorToColor(const int png_color);
+
+  // Determine if the architecture uses little endian byte order.
+  int pngwIsLittleEndianMachine();
 
 #ifdef PNGW_IMPLEMENTATION
 #  ifndef PNGW_IMPLEMENTED
@@ -475,6 +481,11 @@ extern "C"
       png_set_strip_16(png_ptr);  // if scaling not supported, strip off the excess byte instead
 #    endif
     }
+    // swap bytes
+    if (png_bit_depth == 16 && pngwIsLittleEndianMachine())
+    {
+      png_set_swap(png_ptr);
+    }
     // if image has less than 16 bit depth and 16 is wanted, upscale it to 16
     if (png_bit_depth < 16 && load_png_bit_depth == 16)
     {
@@ -561,14 +572,14 @@ extern "C"
     if (!info_ptr)
     {
       fclose(f);
-      png_destroy_write_struct(&png_ptr, NULL, NULL);
+      png_destroy_write_struct(&png_ptr, NULL);
       return PNGW_RESULT_ERROR_OUT_OF_MEMORY;
     }
     /* Create jump buffer to handle errors */
     if (setjmp(png_jmpbuf(png_ptr)))
     {
       fclose(f);
-      png_destroy_write_struct(&png_ptr, &info_ptr, NULL);
+      png_destroy_write_struct(&png_ptr, &info_ptr);
       return PNGW_RESULT_ERROR_JUMP_BUFFER_CALLED;
     }
     const int png_color_type = pngwColorToPngColor(color);
@@ -579,6 +590,11 @@ extern "C"
     png_set_IHDR(png_ptr, info_ptr, (uint32_t)width, (uint32_t)height, (int)depth, png_color_type,
                  PNG_INTERLACE_NONE, PNG_COMPRESSION_TYPE_BASE, PNG_FILTER_TYPE_BASE);
     png_write_info(png_ptr, info_ptr);
+    // swap if writing 16 bit image on little endian machine
+    if (png_bit_depth == 16 && pngwIsLittleEndianMachine())
+    {
+      png_set_swap(png_ptr);
+    }
     int actual_row_offset;
     if (row_offset == PNGW_DEFAULT_ROW_OFFSET)
     {
@@ -645,6 +661,13 @@ extern "C"
     default:
       return PNGW_COLOR_G;
     }
+  }
+
+  int pngwIsLittleEndianMachine()
+  {
+    uint16_t integer = 32769; 
+    char *c = (char*)&integer;
+    return c[0] == 1 && c[1] == 127;
   }
 
 #  endif

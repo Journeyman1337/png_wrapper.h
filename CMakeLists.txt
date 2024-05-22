@@ -1,8 +1,8 @@
-# SPDX-FileCopyrightText: 2022-2023 Daniel Aimé Valcour <fosssweeper@gmail.com>
+# SPDX-FileCopyrightText: 2022-2024 Daniel Aimé Valcour <fosssweeper@gmail.com>
 #
 # SPDX-License-Identifier: MIT
 
-# Copyright (c) 2022-2023 Daniel Aimé Valcour
+# Copyright (c) 2022-2024 Daniel Aimé Valcour
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy of
 # this software and associated documentation files (the "Software"), to deal in
@@ -21,7 +21,7 @@
 
 cmake_minimum_required(VERSION 3.19)
 PROJECT(pngw
-    VERSION 1.0.0
+    VERSION 1.0.2
     DESCRIPTION "A header only wrapper around libpng"
     LANGUAGES C
 )
